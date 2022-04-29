@@ -2,136 +2,228 @@ package Pages;
 
 import DynamicData.DynamicDataTest;
 import Elements.LoginPage_Elements;
+import Elements.ResetYourPassword_Elements;
+import Elements.SignUpPage_Elements;
 import net.serenitybdd.core.pages.PageObject;
-import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.thucydides.core.annotations.DefaultUrl;
 import net.thucydides.junit.annotations.UseTestDataFrom;
-import org.junit.runner.RunWith;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 @DefaultUrl("https://iresource.smartdev.vn")
-@UseTestDataFrom("Testdata/demodata.csv")
-@RunWith(SerenityParameterizedRunner.class)
 
 public class LoginPage extends PageObject {
     DynamicDataTest dynamicDataTest = new DynamicDataTest();
     LoginPage_Elements loginPage_elements = new LoginPage_Elements();
+    ResetYourPassword_Elements resetYourPassword_elements = new ResetYourPassword_Elements();
+    SignUpPage_Elements signUpPage_elements = new SignUpPage_Elements();
     WebDriver driver;
-
-    //variables
-//    String email1 = "iresource_test1@yopmail.com";
-//    String password1 = "Aa@123456";
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    //get tiêu đề login page
-    public String getLoginPageTitle() {
-        String LogIn;
-        LogIn = driver.findElement(loginPage_elements.loginPageTitle).getText();
-        return LogIn;
-    }
-
-    //tiêu đề page "Log In"
-    public String expectLoginPageTitle() {
-        return "Log In";
-    }
-
+    //REFRESH
     //làm mới trang
     public void refresh() {
         driver.navigate().refresh();
     }
 
-    public void enterDynamicEmail() {
-//        dynamicDataTest.test_getdatafromfile();
-        System.out.println(dynamicDataTest.a + " " + dynamicDataTest.b);
-        driver.findElement(loginPage_elements.email).sendKeys(dynamicDataTest.getDynamicEmail());
+    //ENTER DATA
+    //enter incorrectly
+    public void enterIncorrectEmail(String incorrectEmail) {
+        driver.findElement(loginPage_elements.email).sendKeys(incorrectEmail);
+    }
+    public void enterIncorrectPassword(String incorrectPassword) {
+        driver.findElement(loginPage_elements.password).sendKeys(incorrectPassword);
+    }
+    public void enterValidEmail(String validEmail) {
+        driver.findElement(loginPage_elements.email).sendKeys(validEmail);
+    }
+    public void enterValidPassword(String validPassword) {
+        driver.findElement(loginPage_elements.password).sendKeys(validPassword);
     }
 
-    public void enterDynamicPassword() {
-        System.out.println(dynamicDataTest.getDynamicPassword());
-        driver.findElement(loginPage_elements.email).sendKeys(dynamicDataTest.getDynamicPassword());
+    //example scenario outline
+    public void enterEmailFromExample(String email) {
+        driver.findElement(loginPage_elements.email).sendKeys(email);
     }
 
-    //nhập email
-    public void enterEmail() {
-        driver.findElement(loginPage_elements.email).sendKeys("iresource_test1@yopmail.com");
+    public void enterPasswordFromExample(String password) {
+        driver.findElement(loginPage_elements.password).sendKeys(password);
     }
 
-    //nhập password
-    public void enterPassword() {
-        driver.findElement(loginPage_elements.password).sendKeys("Aa@123456");
-    }
-
-    //check password có đc displayed hay không
-    public boolean displayedPassword() {
-        if(driver.findElement(loginPage_elements.password).isDisplayed()) {
-            return true;
-        } else return false;
-    }
-
-    //click eye button trong field password
+    //CLICK
     public void clickEyeButton() {
         driver.findElement(loginPage_elements.eye).click();
     }
-
-    //check Remember Me mặc định có check hay không
-    public boolean defaultRememberMe() {
-        driver.findElement(loginPage_elements.rememberMe).isSelected();
-        return false;
-    }
-
-    //click vào ô Remember Me
     public void clickRememberMe() {
         driver.findElement(loginPage_elements.rememberMe).click();
     }
-
-    //click nút Login
     public void clickLoginButton() {
         driver.findElement(loginPage_elements.loginButton).click();
     }
-
-    //click nút logout
     public void clickLogoutButton() {
         driver.findElement(loginPage_elements.logoutButton).click();
     }
+    public void clickForgotPasswordHyperlink() {
+        driver.findElement(loginPage_elements.forgotPasswordHyperlink).click();
+    }
+    public void clickSignUpHereHyperlink() {
+        driver.findElement(loginPage_elements.signUpHereHyperlink).click();
+    }
 
-    //chờ nút logout xuất hiện sau khi login thành công
-    public void waitUntilLogoutButtonAppear() {
+    //GET TEXT
+    //get title
+    public String getLoginPageTitle() {
+        return driver.findElement(loginPage_elements.loginPageTitle).getText();
+    }
+
+    //get data
+    public String getSavedEmail(String value) {
+        return driver.findElement(loginPage_elements.email).getAttribute(value);
+    }
+    public String getSavedPassword(String value) {
+        return driver.findElement(loginPage_elements.password).getAttribute(value);
+    }
+    //get error
+    public String getEmailFieldError() {
+        return driver.findElement(loginPage_elements.emailFieldError).getText();
+    }
+    public String getPasswordFieldError() {
+        return driver.findElement(loginPage_elements.passwordFieldError).getText();
+    }
+    public String getErrorOrPasswordIsInvalidError() {
+        return driver.findElement(loginPage_elements.emailOrPasswordIsInvalidError).getText();
+    }
+    public String getResetYourPasswordPageTitle() {
+        return driver.findElement(resetYourPassword_elements.resetYourPasswordPageTitle).getText();
+    }
+    public String getSignUpPageTitle() {
+        return driver.findElement(signUpPage_elements.signUpPageTitle).getText();
+    }
+
+
+    //EXPECT
+    //expect title
+    public String expectLoginPageTitle(String title) {
+        return title;
+    }
+    public String expectSignUpPageTitle(String title) {
+        return title;
+    }
+
+    //expect data
+    public String expectSavedEmail(String validEmail) {
+        return validEmail;
+    }
+    public String expectSavedPassword(String validPassword) {
+        return validPassword;
+    }
+
+    //expect error
+    public String expectRequiredError(String requiredError) {
+        return requiredError;
+    }
+    public String expectEmailOrPasswordIsInvalidError(String error) {
+        return error;
+    }
+    public String expectResetYourPasswordPageTitle(String title) {
+        return title;
+    }
+
+    //ASSERT
+    //yes - no
+    public boolean assertDisplayedPassword() {
+        return driver.findElement(loginPage_elements.password).isDisplayed();
+    }
+    public boolean assertDefaultRememberMe() {
+        driver.findElement(loginPage_elements.rememberMe).isSelected();
+        return false;
+    }
+    public void assertRememberMeIsUncheck() {
+        Assert.assertFalse(assertDefaultRememberMe());
+    }
+    public void assertPasswordIsCrossed() {
+        Assert.assertTrue(assertDisplayedPassword()); //not displayed
+    }
+    public void assertPasswordIsDisplayed() {
+        Assert.assertTrue(assertDisplayedPassword()); //displayed
+    }
+
+    //get - expect
+    public void assertTheLoginPageTitleIsDisplayedCorrectly(String title) {
+        Assert.assertEquals(getLoginPageTitle(),expectLoginPageTitle(title));
+    }
+    public void assertEmailOrPasswordIsInvalidErrorIsDisplayedCorrectly(String error) {
+        Assert.assertEquals(getErrorOrPasswordIsInvalidError(), expectEmailOrPasswordIsInvalidError(error));
+    }
+    public void assertEmailIsSavedCorrectly(String validEmail, String value) {
+        Assert.assertEquals(getSavedEmail(value), expectSavedEmail(validEmail));
+    }
+    public void assertPasswordIsSavedCorrectly(String validPassword, String value) {
+        Assert.assertEquals(getSavedPassword(value), expectSavedPassword(validPassword));
+    }
+    public void assertRequiredErrorDisplayedCorrectlyBelowEmailField(String requiredError) {
+        Assert.assertEquals(getEmailFieldError(), expectRequiredError(requiredError));
+    }
+    public void assertRequiredErrorDisplayedCorrectlyBelowPasswordField(String requiredError) {
+        Assert.assertEquals(getPasswordFieldError(), expectRequiredError(requiredError));
+    }
+    public void assertResetYourPasswordPageTitleIsDisplayedCorrectly(String title) {
+        Assert.assertEquals(getResetYourPasswordPageTitle(), expectResetYourPasswordPageTitle(title));
+    }
+    public void assertSignUpPageTitleIsDisplayedCorrectly(String title) {
+        Assert.assertEquals(getSignUpPageTitle(), expectSignUpPageTitle(title));
+    }
+
+    //WAIT
+    public void waitUntilLogoutButtonIsDisplayed() {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage_elements.logoutButton));
     }
-
-    //get nội dung error ở Email field
-    public String getEmailFieldError() {
-        String error;
-        error = driver.findElement(loginPage_elements.emailFieldError).getText();
-        return error;
+    public void waitUntilResetYourPasswordPageIsDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(resetYourPassword_elements.resetYourPasswordPageTitle));
+    }
+    public void waitUntilSignUpPageIsDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(signUpPage_elements.signUpPageTitle));
+    }
+    public void waitUntilEmailOrPasswodIsInvalidErrorIsDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage_elements.emailOrPasswordIsInvalidError));
     }
 
-    //error "Required!" ở Email field
-    public String getRequiredEmailFieldError() {
-        return "Required!";
-    }
-
-    //get nội dung error ở Password field
-    public String getPasswordFieldError() {
-        String error;
-        error = driver.findElement(loginPage_elements.passwordFieldError).getText();
-        return error;
-    }
-
-    //error Required! ở Password field
-    public String getRequiredPasswordFieldError() {
-        return "Required!";
-    }
-
+    //GROUP LOGIN CODES
     //enter email, password rồi click nút login
-    public void login() {
-        enterEmail();
-        enterPassword();
+    public void login(String validEmail, String validPassword) {
+        enterValidEmail(validEmail);
+        enterValidPassword(validPassword);
+        clickLoginButton();
+    }
+    public void loginWithRememberMe(String validEmail, String validPassword) {
+        enterValidEmail(validEmail);
+        enterValidPassword(validPassword);
+        clickRememberMe();
+        clickLoginButton();
+    }
+    //login with incorrect infor
+    public void loginWithIncorrectEmail(String incorrectEmail, String validPassword) {
+        enterIncorrectEmail(incorrectEmail);
+        enterValidPassword(validPassword);
+        clickLoginButton();
+    }
+    public void loginWithIncorrectPassword(String validEmail, String incorrectPassword) {
+        enterValidEmail(validEmail);
+        enterIncorrectPassword(incorrectPassword);
+        clickLoginButton();
+    }
+    public void loginWithIncorrectEmailAndPassword(String incorrectEmail, String incorrectPassword) {
+        enterIncorrectEmail(incorrectEmail);
+        enterIncorrectPassword(incorrectPassword);
         clickLoginButton();
     }
 }

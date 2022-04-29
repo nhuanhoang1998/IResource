@@ -1,0 +1,15 @@
+Elements\LoginPage_Elements.class
+Elements\VerifyEmailPage_Elements.class
+Pages\ResetYourPasswordPage.class
+Pages\VerifyEmailPage.class
+Test\LoginTest.class
+Elements\EmailGeneratingPage_Elements.class
+Steps\SignUp\SignUpSteps.class
+Test\SignUpTest.class
+GenerateData\GenerateData.class
+Pages\SignUpPage.class
+Elements\ResetYourPassword_Elements.class
+DynamicData\DynamicDataTest.class
+Steps\Login\LoginSteps.class
+Elements\SignUpPage_Elements.class
+Pages\LoginPage.class
